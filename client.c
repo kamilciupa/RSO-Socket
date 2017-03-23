@@ -14,6 +14,7 @@
 void AskSqrt(double number);
 unsigned char* ConvertToChar(unsigned int i);
 unsigned char* ToBigEndian(unsigned char* i);
+unsigned char* GenerateIdRq();
 
 
 
@@ -69,9 +70,20 @@ void  AskSqrt(double number)	{
 	unsigned int i = 012;
 	unsigned	char *id ;
 	id = (unsigned char*)malloc(i*sizeof(unsigned int));
-	id = ToBigEndian(ConvertToChar(i));
+	//id = ToBigEndian(ConvertToChar(i));
+	id = GenerateIdRq();
 	printf(" %d \n %d \n %d \n %d", id[0],id[1],id[2],id[3]);
 
+}
+
+unsigned char* GenerateIdRq() {
+
+	srand(time(NULL));
+	unsigned int id = rand() % 999999;
+	unsigned char *result;
+	result = (unsigned char*)malloc(id*sizeof(unsigned int));
+	result = ToBigEndian(ConvertToChar(id));
+	return result;
 }
 
 unsigned char* ConvertToChar(unsigned int i) {
