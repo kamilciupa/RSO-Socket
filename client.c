@@ -12,7 +12,7 @@
 
 //bool IsBigEndian(char* package);
 void AskSqrt(double number);
-unsigned char* ConvertToChar(unsigned int i);
+unsigned char* ConvertIntToChar(unsigned int i);
 unsigned char* ToBigEndian(unsigned char* i);
 unsigned char* GenerateIdRq();
 
@@ -82,11 +82,11 @@ unsigned char* GenerateIdRq() {
 	unsigned int id = rand() % 999999;
 	unsigned char *result;
 	result = (unsigned char*)malloc(id*sizeof(unsigned int));
-	result = ToBigEndian(ConvertToChar(id));
+	result = ToBigEndian(ConvertIntToChar(id));
 	return result;
 }
 
-unsigned char* ConvertToChar(unsigned int i) {
+unsigned char* ConvertIntToChar(unsigned int i) {
 
 	unsigned char *result;
 	result = (unsigned char*)malloc(i*sizeof(unsigned int));
