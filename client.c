@@ -12,9 +12,11 @@
 
 //bool IsBigEndian(char* package);
 void AskSqrt(double number);
+void AskDate();
 unsigned char* ConvertIntToChar(unsigned int i);
 unsigned char* ToBigEndian(unsigned char* i);
 unsigned char* GenerateIdRq();
+unsigned char* ConvertDoubleTochar(double i) ;
 
 
 
@@ -55,7 +57,8 @@ int main (int agrc, char *argv[]) {
 	}
 
 	/*  We can now read/write via sockfd.  */
-	AskSqrt(2.0);
+	//AskSqrt(2.0);
+	AskDate();
 	write (sockfd, &ch, 1);
 	read (sockfd, &ch, 1);
 	//printf ("char from server = %s\n", ch);
@@ -70,10 +73,31 @@ void  AskSqrt(double number)	{
 	unsigned int i = 012;
 	unsigned	char *id ;
 	id = (unsigned char*)malloc(i*sizeof(unsigned int));
+
 	//id = ToBigEndian(ConvertToChar(i));
 	id = GenerateIdRq();
 	printf(" %d \n %d \n %d \n %d", id[0],id[1],id[2],id[3]);
 
+}
+
+void AskDate() {
+int j = 0;
+	unsigned int i = 0002;
+	unsigned	char *id ;
+	unsigned char *rqid;
+	unsigned char *Request;
+
+	id = (unsigned char*)malloc(4*sizeof(unsigned char));
+	rqid = (unsigned char*)malloc(4*sizeof(unsigned char));
+	Request = (unsigned char*)malloc(sizeof(id)+sizeof(rqid));
+	id = ToBigEndian(ConvertIntToChar(i));
+	rqid = GenerateIdRq();
+	memcpy(Request, id, 4);
+	memcpy(&Request[4], rqid, 4);
+
+	for(j = 0 ; j < 8 ; j++){
+		printf(" %d ", Request[j]);
+	}
 }
 
 unsigned char* GenerateIdRq() {
@@ -81,7 +105,7 @@ unsigned char* GenerateIdRq() {
 	srand(time(NULL));
 	unsigned int id = rand() % 999999;
 	unsigned char *result;
-	result = (unsigned char*)malloc(id*sizeof(unsigned int));
+	result = (unsigned char*)malloc(4);
 	result = ToBigEndian(ConvertIntToChar(id));
 	return result;
 }
@@ -89,18 +113,32 @@ unsigned char* GenerateIdRq() {
 unsigned char* ConvertIntToChar(unsigned int i) {
 
 	unsigned char *result;
-	result = (unsigned char*)malloc(i*sizeof(unsigned int));
+	result = (unsigned char*)malloc(4);
 	result[0] = i & 0x000000ff;
 	result[1] = (i & 0x0000ff00) >> 8;
 	result[2] = (i & 0x00ff0000) >> 16;
 	result[3] = (i & 0xff000000) >> 24;
 	return result;
 }
+/*
+unsigned char* ConvertDoubleTochar(double i) {
+	result = (unsigned char*)malloc(i*sizeof(double));
+	result[0] = i & 0x00000000000000ff;
+	result[1] = (i & 0x000000f0) >> 8;
+	result[2] = (i & 0x00000f00) >> 16;
+	result[3] = (i & 0x0000f000) >> 24;
+	result[4] = (i & 0x000f0000) >> 32;
+	result[5] = (i & 0x00f00000) >> 40;
+	result[6] = (i & 0x0f000000) >> 48;
+	result[7] = (i & 0xf0000000) >> 56;
+	return result;
+
+}*/
 
 unsigned char* ToBigEndian(unsigned char* i) {
 
 	unsigned char *result;
-	result = (unsigned char*)malloc(sizeof(i));
+	result = (unsigned char*)malloc(4);
 	result[0] = i[3];
 	result[1] = i[2];
 	result[2] = i[1];
