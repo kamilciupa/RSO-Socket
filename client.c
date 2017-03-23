@@ -27,8 +27,10 @@ int main (int agrc, char *argv[]) {
 	int result;
 	double tosqrt = 4;
 
-	char ch[16];// = "a";
-
+	//unsigned char ch[8] = AskDate();// = "a";
+	unsigned char *ch;
+	ch = (unsigned char*)malloc(8*sizeof(unsigned char));
+	ch = AskDate();
 	//memcpy(&ch,&tosqrt,sizeof(tosqrt));
 	//sprintf(ch,"%f",tosqrt);
 
@@ -58,8 +60,8 @@ int main (int agrc, char *argv[]) {
 
 	/*  We can now read/write via sockfd.  */
 	//AskSqrt(2.0);
-	AskDate();
-	write (sockfd, &ch, 1);
+
+	write (sockfd, &ch, 8);
 	read (sockfd, &ch, 1);
 	//printf ("char from server = %s\n", ch);
 	close (sockfd);
