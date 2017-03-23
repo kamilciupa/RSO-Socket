@@ -12,7 +12,7 @@
 
 //bool IsBigEndian(char* package);
 void AskSqrt(double number);
-void AskDate();
+unsigned char* AskDate();
 unsigned char* ConvertIntToChar(unsigned int i);
 unsigned char* ToBigEndian(unsigned char* i);
 unsigned char* GenerateIdRq();
@@ -80,7 +80,7 @@ void  AskSqrt(double number)	{
 
 }
 
-void AskDate() {
+unsigned char* AskDate() {
 int j = 0;
 	unsigned int i = 0002;
 	unsigned	char *id ;
@@ -98,6 +98,8 @@ int j = 0;
 	for(j = 0 ; j < 8 ; j++){
 		printf(" %d ", Request[j]);
 	}
+
+	return Request;
 }
 
 unsigned char* GenerateIdRq() {
