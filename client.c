@@ -30,7 +30,7 @@ int main (int agrc, char *argv[]) {
 	//unsigned char ch[8] = AskDate();// = "a";
 	unsigned char *ch;
 	ch = (unsigned char*)malloc(8*sizeof(unsigned char));
-	ch = AskSqrt(16.0);
+	ch = AskSqrt(40.0);
 	//ch = AskDate();
 	//
 
@@ -65,7 +65,7 @@ int main (int agrc, char *argv[]) {
 	/*  We can now read/write via sockfd.  */
 	//AskSqrt(2.0);
 
-	write (sockfd, &ch, 8);
+	write (sockfd, &ch, 16);
 	read (sockfd, &ch, 1);
 	//printf ("char from server = %s\n", ch);
 	close (sockfd);
@@ -77,27 +77,30 @@ int main (int agrc, char *argv[]) {
 unsigned char* AskSqrt(double number)	{
 
 	unsigned int i = 0001;
-	int j = 0 ;
 	unsigned	char *id ;
 	unsigned char *numberToSqrt;
 	unsigned char *idrq;
+	unsigned char *Request;
 	id = (unsigned char*)malloc(sizeof(unsigned int));
 	numberToSqrt = (unsigned char*)malloc(sizeof(double));
 	idrq = (unsigned char*)malloc(sizeof(unsigned int));
+	Request = (unsigned char*)malloc(2*(sizeof(unsigned int)) + sizeof(double));
 
 	numberToSqrt = ConvertDoubleTochar(number);
 	id = ToBigEndian(ConvertIntToChar(i));
 	idrq = GenerateIdRq();
-for(j = 0 ; j <= 3 ; j++){
-	printf("%d \n", numberToSqrt[j]);
-}
+	memcpy(Request, id, 4);
+	memcpy(&Request[4], idrq, 4);
+	memcpy(&Request[8], numberToSqrt, 8);
 
+	free(id);
+	free(numberToSqrt);
+	free(idrq);
 
-return id;
+	return Request;
 }
 
 unsigned char* AskDate() {
-int j = 0;
 	unsigned int i = 0002;
 	unsigned	char *id ;
 	unsigned char *rqid;
@@ -111,9 +114,8 @@ int j = 0;
 	memcpy(Request, id, 4);
 	memcpy(&Request[4], rqid, 4);
 
-	for(j = 0 ; j < 8 ; j++){
-		printf(" %d ", Request[j]);
-	}
+	free(id);
+	free(rqid);
 
 	return Request;
 }
@@ -142,20 +144,17 @@ unsigned char* ConvertIntToChar(unsigned int i) {
 unsigned char* ConvertDoubleTochar(double i) {
 	unsigned char *result;
 	result = (unsigned char*)malloc(sizeof(double));
-	result = (unsigned char*) &i;
-
+	memcpy(result, &i, sizeof(i));
 	return result;
-
 }
 
-unsigned char* ToBigEndian(unsigned char* i) {
+unsigned char* ToBigEndian(unsigned char* j) {
 
+	int i = 0;
 	unsigned char *result;
-	result = (unsigned char*)malloc(4);
-	result[0] = i[3];
-	result[1] = i[2];
-	result[2] = i[1];
-	result[3] = i[0];
+	result = (unsigned char*)malloc(sizeof(4));
+	for(i = 0 ; i <= 3 ; i++){
+		result[i] = j[3 - i];
+	}
 	return result;
-
 }
