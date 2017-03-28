@@ -11,7 +11,7 @@
 #include <ctype.h>
 
 //bool IsBigEndian(char* package);
-void AskSqrt(double number);
+unsigned char* AskSqrt(double number);
 unsigned char* AskDate();
 unsigned char* ConvertIntToChar(unsigned int i);
 unsigned char* ToBigEndian(unsigned char* i);
@@ -30,7 +30,11 @@ int main (int agrc, char *argv[]) {
 	//unsigned char ch[8] = AskDate();// = "a";
 	unsigned char *ch;
 	ch = (unsigned char*)malloc(8*sizeof(unsigned char));
-	ch = AskDate();
+	ch = AskSqrt(16.0);
+	//ch = AskDate();
+	//
+
+
 	//memcpy(&ch,&tosqrt,sizeof(tosqrt));
 	//sprintf(ch,"%f",tosqrt);
 
@@ -70,16 +74,26 @@ int main (int agrc, char *argv[]) {
 
 
 
-void  AskSqrt(double number)	{
+unsigned char* AskSqrt(double number)	{
 
-	unsigned int i = 012;
+	unsigned int i = 0001;
+	int j = 0 ;
 	unsigned	char *id ;
-	id = (unsigned char*)malloc(i*sizeof(unsigned int));
+	unsigned char *numberToSqrt;
+	unsigned char *idrq;
+	id = (unsigned char*)malloc(sizeof(unsigned int));
+	numberToSqrt = (unsigned char*)malloc(sizeof(double));
+	idrq = (unsigned char*)malloc(sizeof(unsigned int));
 
-	//id = ToBigEndian(ConvertToChar(i));
-	id = GenerateIdRq();
-	printf(" %d \n %d \n %d \n %d", id[0],id[1],id[2],id[3]);
+	numberToSqrt = ConvertDoubleTochar(number);
+	id = ToBigEndian(ConvertIntToChar(i));
+	idrq = GenerateIdRq();
+for(j = 0 ; j <= 3 ; j++){
+	printf("%d \n", numberToSqrt[j]);
+}
 
+
+return id;
 }
 
 unsigned char* AskDate() {
@@ -124,20 +138,15 @@ unsigned char* ConvertIntToChar(unsigned int i) {
 	result[3] = (i & 0xff000000) >> 24;
 	return result;
 }
-/*
+
 unsigned char* ConvertDoubleTochar(double i) {
-	result = (unsigned char*)malloc(i*sizeof(double));
-	result[0] = i & 0x00000000000000ff;
-	result[1] = (i & 0x000000f0) >> 8;
-	result[2] = (i & 0x00000f00) >> 16;
-	result[3] = (i & 0x0000f000) >> 24;
-	result[4] = (i & 0x000f0000) >> 32;
-	result[5] = (i & 0x00f00000) >> 40;
-	result[6] = (i & 0x0f000000) >> 48;
-	result[7] = (i & 0xf0000000) >> 56;
+	unsigned char *result;
+	result = (unsigned char*)malloc(sizeof(double));
+	result = (unsigned char*) &i;
+
 	return result;
 
-}*/
+}
 
 unsigned char* ToBigEndian(unsigned char* i) {
 
