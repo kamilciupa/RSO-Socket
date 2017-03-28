@@ -49,24 +49,20 @@ int main (int agrc, char *argv[]) {
 
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = inet_addr ("127.0.0.1");
-	address.sin_port = htons (9878);
+	address.sin_port = htons (9879);
 	len = sizeof (address);
 
 	/*  Now connect our socket to the server's socket.  */
 
 	result = connect (sockfd, (struct sockaddr *) &address, len);
-
-	if (result == -1)
-	{
-		perror ("oops: netclient");
-		exit (1);
-	}
-
+		if (result == -1)
+		{
+			perror ("oops: netclient");
+			exit (1);
+		}
 	/*  We can now read/write via sockfd.  */
-	//AskSqrt(2.0);
-
 	write (sockfd, &ch, 16);
-	read (sockfd, &ch, 1);
+	//read (sockfd, &ch, 1);
 	//printf ("char from server = %s\n", ch);
 	close (sockfd);
 	exit (0);
@@ -75,7 +71,7 @@ int main (int agrc, char *argv[]) {
 
 
 unsigned char* AskSqrt(double number)	{
-
+	int j = 0;
 	unsigned int i = 0001;
 	unsigned	char *id ;
 	unsigned char *numberToSqrt;
@@ -92,6 +88,10 @@ unsigned char* AskSqrt(double number)	{
 	memcpy(Request, id, 4);
 	memcpy(&Request[4], idrq, 4);
 	memcpy(&Request[8], numberToSqrt, 8);
+
+	for (j = 0; j < 16; j++) {
+		printf(" %d ", Request[j]);
+	}
 
 	free(id);
 	free(numberToSqrt);
