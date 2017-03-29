@@ -37,7 +37,9 @@ int main() {
     client_sock = accept (server_sock, (struct sockaddr *) &client_address, &client_len);
     //read
 	read (client_sock, ch, 16);
-	
+	for(i = 8 ; i < 16 ; i++){
+		((char*)&id)[i] = ch[i];
+	}
 	   // printf("\n");
 		//for(i = 0 ; i <= 15 ; i++){
 		//      printf(" %d " , ch[i]);

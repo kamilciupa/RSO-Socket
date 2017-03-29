@@ -28,7 +28,7 @@ char* ch;
 
 	pac(ch, 5, 0);
 	result = unpac(ch, 0);
-	printf("\n %d \n" , result);
+
 
 	/*  Create a socket for the client.  */
 

@@ -87,8 +87,8 @@ char* AskSqrt(double number) {
   memcpy(&buf[11],id, 4);
 
   buf = ToBigEndian(buf, 16);
-  for(j = 0 ; j <= 15 ; j++) {
-    printf(" %d ", buf[j]);
+  for(j = 0 ; j <= 3 ; j++) {
+    printf(" %d ", id[j]);
   }
 
     
