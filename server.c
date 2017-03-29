@@ -46,7 +46,6 @@ int main(int agrc, char *argv[]) {
     //read
 
     read (client_sock, ch, ((2*sizeof(int))+sizeof(double)));
-    //changeEndianess(ch, ((2*sizeof(int))+sizeof(double)));
     id = uInt(ch, 0);
     rqid = uInt(ch,sizeof(int));
     if(id == 1) {

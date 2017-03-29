@@ -21,25 +21,22 @@ int main (int agrc, char *argv[]) {
 	int sockfd;
 	socklen_t len;
 	struct sockaddr_in address;
-	int result; int choice = 0;
-	int id ; int rqid ; double val = 0;
-
+	int result;
+ 	int choice = 0;
+	int id ;
+ 	int rqid ;
+ 	double val = 0;
 	char *ch;
 
 
 	/*  Create a socket for the client.  */
-
 	sockfd = socket (AF_INET, SOCK_STREAM, 0);
-
 	/*  Name the socket, as agreed with the server.  */
-
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = inet_addr ("127.0.0.1");
 	address.sin_port = htons (atoi(argv[1]));
 	len = sizeof (address);
-
 	/*  Now connect our socket to the server's socket.  */
-
 	result = connect (sockfd, (struct sockaddr *) &address, len);
 		if (result == -1)
 		{
@@ -49,25 +46,21 @@ int main (int agrc, char *argv[]) {
 	/*  We can now read/write via sockfd.  */
 	printf("Which operation \n 1 - Square Root \n 2 - Time \n");
 	scanf("%d", &choice);
-
 	if(choice == 1) {
-	ch = malloc((2*sizeof(int)+sizeof(double)));
-	printf("Type number to square\n");
-	scanf("%lg", &val);
-	makeSqrt(ch, val);
-//	makeTime(ch);
-
-	if(write (sockfd, ch, 16) == -1) {
-    perror ("oops: fail write");
-    exit (1);
-  }
-	read (sockfd, ch, 16);
-
-	id = uInt(ch, 0);
-	rqid = uInt(ch,sizeof(int));
-	val = uDouble(ch, sizeof(double));
-	printf("\n %d \n", rqid);
-	printf(" %f \n", val);
+		ch = malloc((2*sizeof(int)+sizeof(double)));
+		printf("Type number to square\n");
+		scanf("%lg", &val);
+		makeSqrt(ch, val);
+		if(write (sockfd, ch, 16) == -1) {
+	    perror ("oops: fail write");
+	    exit (1);
+	  }
+		read (sockfd, ch, 16);
+		id = uInt(ch, 0);
+		rqid = uInt(ch,sizeof(int));
+		val = uDouble(ch, sizeof(double));
+		printf("\n %d \n", rqid);
+		printf(" %f \n", val);
 } else if (choice == 2) {
 		ch = malloc(2*sizeof(int));
 		makeTime(ch);
