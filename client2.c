@@ -27,8 +27,9 @@ int main (int agrc, char *argv[]) {
  	int rqid ;
  	double val = 0;
 	char *ch;
-
-
+	//char bufff[sizeof(int)];
+	//int temp;
+	//isBigEndian();
 	/*  Create a socket for the client.  */
 	sockfd = socket (AF_INET, SOCK_STREAM, 0);
 	/*  Name the socket, as agreed with the server.  */
@@ -45,6 +46,14 @@ int main (int agrc, char *argv[]) {
 		}
 	/*  We can now read/write via sockfd.  */
 	printf("Which operation \n 1 - Square Root \n 2 - Time \n");
+
+/*
+	pInt(bufff, 2147483646, 0);
+	changeEndianess(bufff, sizeof(int));
+	changeEndianess(bufff, sizeof(int));
+	temp = uInt(bufff, 0);
+	printf("To jest cos %d", temp);
+*/
 	scanf("%d", &choice);
 	if(choice == 1) {
 		ch = malloc((2*sizeof(int)+sizeof(double)));
@@ -69,7 +78,6 @@ int main (int agrc, char *argv[]) {
 		printf("%d\n", uInt(ch,sizeof(int)) );
 		printf("%d\n", uInt(ch, sizeof(int)*2));
 }
-
 	close (sockfd);
 	exit (0);
 }
@@ -132,28 +140,28 @@ void makeTime(char* buf) {
 
 int isBigEndian() {
 
-	int i = 1;
+	/*int i = 1;
 	char buf[sizeof(int)];
 	char *bufptr;
 	bufptr = buf;
-	pInt(bufptr, i, 0);
-	if((int)(((char*)&buf)[0]) == 1)
-			//printf("Little\n");
-			return 0;
-		else
-			//printf("Big\n");
-			return 1;
+	pInt(bufptr, i, 0);*/
+	int buf = 1;
+	if((int)(((char*)&buf)[0]) == 1) {
+			printf("Little\n");
+			return 0;}
+		else {
+			printf("Big\n");
+			return 1;}
 }
 
 void changeEndianess(char* buf, int size) {
 
-		int i = 0;
-		char tmp;
-
-		for(i = 0 ; i < size ; i++){
-			tmp = buf[i];
-			buf[i] = buf[size] ;
-			buf[size] = tmp;
-		}
+	int i, j;
+	char tmp;
+	for(i = 0 , j = size ; j > i ; i++ , j-- ) {
+		tmp = buf[i];
+		buf[i] = buf[j];
+		buf[j] = tmp;
+	}
 
 }

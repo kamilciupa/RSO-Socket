@@ -16,6 +16,7 @@ double uDouble(char* buf, int offset);
 void makeSqrt(char* buf, int rqid, double val);
 void makeTime(char* buf, int rqid);
 void changeEndianess(char* buf, int size);
+int isBigEndian();
 
 int main(int agrc, char *argv[]) {
 
@@ -118,14 +119,29 @@ void makeTime(char* buf, int rqid) {
 
 }
 
+int isBigEndian() {
+
+	/*int i = 1;
+	char buf[sizeof(int)];
+	char *bufptr;
+	bufptr = buf;
+	pInt(bufptr, i, 0);*/
+	int buf = 1;
+	if((int)(((char*)&buf)[0]) == 1) {
+			printf("Little\n");
+			return 0;}
+		else {
+			printf("Big\n");
+			return 1;}
+}
+
 void changeEndianess(char* buf, int size) {
 
-		int i = 0;
-		char tmp;
-
-		for(i = 0 ; i < size ; i++){
-			tmp = buf[i];
-			buf[i] = buf[size] ;
-			buf[size] = tmp;
-		}
-  }
+	int i, j;
+	char tmp;
+	for(i = 0 , j = size ; j > i ; i++ , j-- ) {
+		tmp = buf[i];
+		buf[i] = buf[j];
+		buf[j] = tmp;
+	}
+}
